@@ -12,7 +12,7 @@ interface KpiCardProps {
 export function KpiCard({ label, value, tone = 'cyan', icon, subtext }: KpiCardProps) {
   let glowBorder = 'border-white/[0.08] hover:border-cyan-500/40';
   let iconBg = 'bg-cyan-500/10 text-cyan-400 border-cyan-500/20';
-  let valColor = 'text-white';
+  let valColor = 'text-slate-900 dark:text-white';
 
   if (tone === 'critical' || tone === 'rose') {
     glowBorder = 'border-rose-500/30 hover:border-rose-500/60 shadow-[0_0_20px_rgba(244,63,94,0.12)]';

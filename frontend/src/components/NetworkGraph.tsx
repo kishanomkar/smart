@@ -106,7 +106,7 @@ export function NetworkGraph({ graph }: { graph: Graph }) {
   return (
     <div className="h-full flex flex-col justify-between">
       {/* ReactFlow Topology Canvas */}
-      <div className="h-[280px] w-full rounded-xl overflow-hidden border border-white/[0.06] bg-slate-950/70 relative">
+      <div className="h-[280px] w-full rounded-xl overflow-hidden border border-slate-200/[0.06] bg-white/70 dark:bg-slate-950/70 relative">
         <ReactFlow nodes={nodes} edges={edges} fitView minZoom={0.6} maxZoom={1.5}>
           <Background color="#1e293b" gap={20} size={1} />
           <Controls showInteractive={false} className="!bg-slate-900 !border-slate-700 !text-white" />

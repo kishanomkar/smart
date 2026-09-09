@@ -7,7 +7,6 @@ from pathlib import Path
 from typing import Any
 
 import numpy as np
-from scapy.all import sniff
 
 from .flow_engine import FlowAggregator
 from .features import flow_to_features
@@ -156,29 +155,30 @@ class LiveAttackDetector:
         }
 
     def start(self):
-        # Auto-detect interface on Windows if eth0 fails
-        import platform
-        if platform.system() == "Windows":
-            from scapy.all import get_if_list
-            ifaces = get_if_list()
-            if self.interface not in ifaces:
-                # Try to find a common Windows interface name
-                for candidate in ["Ethernet", "Wi-Fi", "Local Area Connection"]:
-                    if candidate in ifaces:
-                        print(f"Interface {self.interface} not found. Switching to {candidate}")
-                        self.interface = candidate
-                        break
-                if self.interface not in ifaces:
-                    # Just pick the first available one if nothing matches
-                    self.interface = ifaces[0] if ifaces else "lo"
-                    print(f"Using detected interface: {self.interface}")
+        def _sniff_runner():
+            try:
+                import platform
+                if platform.system() == "Windows":
+                    try:
+                        from scapy.all import get_if_list
+                        ifaces = get_if_list()
+                        if self.interface not in ifaces:
+                            for candidate in ["Ethernet", "Wi-Fi", "Local Area Connection"]:
+                                if candidate in ifaces:
+                                    self.interface = candidate
+                                    break
+                            if self.interface not in ifaces and ifaces:
+                                self.interface = ifaces[0]
+                    except Exception as e:
+                        print(f"Interface detection warning: {e}")
+
+                print(f"Starting live capture on {self.interface}...")
+                sniff(iface=self.interface, prn=self._packet_callback, store=0)
+            except Exception as ex:
+                print(f"Live sniffing could not bind socket: {ex}. Passive/file mode active.")
 
         self.is_running = True
-        print(f"Starting live capture on {self.interface}...")
-        self._sniff_thread = threading.Thread(
-            target=lambda: sniff(iface=self.interface, prn=self._packet_callback, store=0),
-            daemon=True
-        )
+        self._sniff_thread = threading.Thread(target=_sniff_runner, daemon=True)
         self._sniff_thread.start()
 
     def stop(self):

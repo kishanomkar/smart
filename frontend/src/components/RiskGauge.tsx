@@ -119,14 +119,12 @@ export const RiskGauge: React.FC<RiskGaugeProps> = ({
             animate={{ scale: 1, opacity: 1 }}
             className="flex items-baseline"
           >
-            <span className="text-4xl font-extrabold tracking-tight text-white font-mono">
-              {percentage}
-            </span>
+            <span className="text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white font-mono">{percentage}</span>
             <span className={`text-xl font-bold ml-0.5 ${levelColor}`}>%</span>
           </motion.div>
           <div className="flex items-center gap-1.5 mt-1 px-2.5 py-0.5 rounded-full bg-slate-900/80 border border-slate-700/60 text-[10px] font-mono text-slate-300">
             <span>PRED:</span>
-            <span className="font-bold text-white">{prediction}</span>
+            <span className="font-bold text-slate-900 dark:text-white">{prediction}</span>
           </div>
         </div>
       </div>

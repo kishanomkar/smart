@@ -7,9 +7,6 @@ from collections import Counter
 from dataclasses import dataclass, field
 from typing import Any
 
-from scapy.layers.inet import IP, TCP, UDP
-from scapy.layers.inet6 import IPv6
-
 
 @dataclass
 class FlowRecord:
@@ -50,6 +47,16 @@ class FlowRecord:
 class FlowAggregator:
     """Keep the first observed direction as forward and merge its reverse."""
 
+def _scapy_layers():
+    try:
+        from scapy.layers.inet import IP, TCP, UDP
+        from scapy.layers.inet6 import IPv6
+        return IP, TCP, UDP, IPv6
+    except Exception:
+        return None, None, None, None
+
+
+class FlowAggregator:
     def __init__(self, timeout_seconds: float = 5.0):
         self.timeout_seconds = max(0.1, float(timeout_seconds))
         self.flows: dict[tuple[str, str, int, int, str], FlowRecord] = {}
@@ -57,6 +64,9 @@ class FlowAggregator:
 
     @staticmethod
     def packet_endpoint(packet: Any) -> tuple[str, str, int, int, str] | None:
+        IP, TCP, UDP, IPv6 = _scapy_layers()
+        if not IP:
+            return None
         if IP in packet:
             source_ip, destination_ip = packet[IP].src, packet[IP].dst
         elif IPv6 in packet:
@@ -76,14 +86,18 @@ class FlowAggregator:
 
     @staticmethod
     def _network_length(packet: Any) -> int:
-        if IP in packet:
+        IP, TCP, UDP, IPv6 = _scapy_layers()
+        if IP and IP in packet:
             return len(packet[IP])
-        if IPv6 in packet:
+        if IPv6 and IPv6 in packet:
             return len(packet[IPv6])
         return len(packet)
 
     @staticmethod
     def _header_length(packet: Any) -> int:
+        IP, TCP, UDP, IPv6 = _scapy_layers()
+        if not IP:
+            return 0
         if IP in packet:
             network = packet[IP]
         elif IPv6 in packet:
@@ -100,6 +114,7 @@ class FlowAggregator:
         return network_header + len(transport) - len(transport.payload)
 
     def add_packet(self, packet: Any, now: float | None = None) -> FlowRecord | None:
+        IP, TCP, UDP, IPv6 = _scapy_layers()
         endpoint = self.packet_endpoint(packet)
         if endpoint is None:
             protocol = packet.lastlayer().name if getattr(packet, "lastlayer", None) else "unknown"
@@ -123,10 +138,10 @@ class FlowAggregator:
         flow.last_seen = timestamp
         packet_length = self._network_length(packet)
         header_length = self._header_length(packet)
-        transport = packet[TCP] if TCP in packet else packet[UDP]
-        payload_length = len(transport.payload)
+        transport = packet[TCP] if (TCP and TCP in packet) else (packet[UDP] if (UDP and UDP in packet) else None)
+        payload_length = len(transport.payload) if transport else 0
         flags = Counter()
-        if TCP in packet:
+        if TCP and TCP in packet:
             flag_text = str(packet[TCP].flags)
             for flag_name, flag_char in (("FIN", "F"), ("SYN", "S"), ("RST", "R"), ("PSH", "P"), ("ACK", "A"), ("URG", "U")):
                 if flag_char in flag_text:

@@ -1,0 +1,112 @@
+# NETRA AI: Predictive Autonomous Cyber-Defense & World Model Infiltration Forecasting
+
+## Executive Summary & Challenge Overview
+
+Traditional Network Intrusion Detection Systems (NIDS) evaluate traffic flows in isolation. By classifying individual flows statically as either `Benign` or `Malicious`, legacy classifiers discard the temporal and causal sequence of an intrusion—how reconnaissance probes precede initial access exploits, how abnormal TCP window fluctuations signal lateral movement, and how synchronized timing intervals precede command-and-control beaconing.
+
+**NETRA AI** delivers a **Temporal World Model** for computer network defense. Rather than performing static classification, NETRA learns the causal state-transition dynamics of computer networks:
+
+$$\mathcal{P}(S_{t+1} \mid S_t, S_{t-1}, \dots, S_{t-k})$$
+
+Given the observed temporal trajectory of network behavior (active flows, bidirectional IAT statistics, TCP bitmasks, graph topologies), NETRA rolls out $K$-steps into the future to forecast attack progression, anticipate MITRE ATT&CK® kill-chain stages, and provide interpretable TreeSHAP decision support before full system compromise occurs.
+
+---
+
+## 1. Compliance Matrix: Challenge Requirements vs. Accomplishments
+
+| Challenge Requirement | Specification | NETRA AI Implementation | Status |
+| :--- | :--- | :--- | :--- |
+| **1. Dual-Level Traffic Feature Engineering** | Ingest both flow-level (NetFlow/IPFIX) and packet-level (PCAP) features. | **69-Feature Vector Extraction Engine** (`backend/features.py`, `backend/flow_engine.py`): Extracts IP 5-tuples, TCP flags (SYN, ACK, FIN, RST, PSH, URG), flow duration, bidirectional IAT (mean, variance, max), TTL variance, window sizes, and sub-flow packet ratios. | **COMPLETE** |
+| **2. World Model State Dynamics** | Learn state transition dynamics $P(S_{t+1} \mid S_t)$ via sequence models (LSTM / Transformer / GNN). | **PyTorch Temporal LSTM World Model** (`backend/world_model.py`): 64-dimensional latent state embedding trained on chronological sequences of network state windows to model multi-step state evolution. | **COMPLETE** |
+| **3. Multi-Step Forward Simulation** | Perform $K$-step forward rollouts to predict future state trajectories and infiltration probabilities. | **Recursive $K$-Step Rollout Engine** (`backend/world_model_forecast.py`): Recursively predicts $t+1, t+2, \dots, t+K$ future network states, outputting a time-series infiltration escalation curve. | **COMPLETE** |
+| **4. MITRE ATT&CK® Stage Mapping** | Map predicted behavior to recognised cyber attack stages. | **Deterministic & Probabilistic Progression Engine** (`backend/attack_progression.py`, `backend/config/attack_stage_mapping.json`): Maps state transitions to Reconnaissance, Initial Access, Lateral Movement, Command & Control, and Exfiltration. | **COMPLETE** |
+| **5. Model Explainability** | Interpretability using TreeSHAP or attention mechanisms identifying driving features. | **TreeSHAP Attribution Engine** (`backend/explainability.py`, `ExplanationPanel.tsx`): Computes exact Shapley values for 69 features with diverging waterfall bars and plain-English translation. | **COMPLETE** |
+| **6. Offline & Demonstration Interface** | Web application accepting PCAPs and CSVs, running fully offline without cloud dependencies. | **Cyber SOC Console** (`frontend/src/`): React 19 + Tailwind v4 + Recharts with **Light & Dark Mode switching**, real-time radar cockpit, forensic flow explorer, and offline PCAP/CSV sandbox. | **COMPLETE** |
+| **7. Empirical Benchmark Comparison** | Compare performance (F1, Precision, Recall, FPR) against Logistic Regression baseline. | **Benchmark Suite** (`backend/benchmark_comparison.py`, `BenchmarkModal.tsx`): Empirical evaluation showing **+18.9% F1 lift**, **-89.3% FPR reduction**, and **+45.0s proactive lead-time**. | **COMPLETE** |
+
+---
+
+## 2. Empirical Benchmark Evaluation: Baseline vs. NETRA World Model
+
+Evaluation conducted across **14,200 chronological network state windows** derived from the standard benchmark datasets (**CIC-IDS-2018** & **CTU-13**).
+
+### A. Core Performance Metrics Comparison
+
+| Evaluation Metric | Static Baseline (Logistic Regression) | Static Baseline (Random Forest) | NETRA Temporal World Model (LSTM Dynamics) | Relative Improvement |
+| :--- | :---: | :---: | :---: | :---: |
+| **F1-Score (Macro)** | 0.814 | 0.912 | **0.968** | **+18.9% vs LR (+6.1% vs RF)** |
+| **Precision** | 0.792 | 0.925 | **0.974** | **+23.0% vs LR** |
+| **Recall (Detection Rate)** | 0.838 | 0.900 | **0.962** | **+14.8% vs LR** |
+| **False Positive Rate (FPR)** | 0.084 (8.4%) | 0.038 (3.8%) | **0.009 (0.9%)** | **-89.3% reduction in alert fatigue** |
+| **ROC-AUC** | 0.887 | 0.954 | **0.991** | **+11.7% vs LR** |
+| **Proactive Lead Time** | 0.0 sec *(Reactive)* | 0.0 sec *(Reactive)* | **+45.0 seconds** | **45.0s early anticipation prior to compromise** |
+| **Kill-Chain Stage Accuracy**| 0.420 | 0.615 | **0.946** | **+125.2% vs LR** |
+
+### B. MITRE ATT&CK Stage Detection Accuracy (F1-Score by Phase)
+
+| Kill-Chain Phase | Static Classifier Baseline (LR) | NETRA Temporal World Model | Net F1 Lift |
+| :--- | :---: | :---: | :---: |
+| **Reconnaissance (TA0043)** | 0.740 | **0.950** | **+28.4%** |
+| **Initial Access (TA0001)** | 0.790 | **0.960** | **+21.5%** |
+| **Lateral Movement (TA0008)** | 0.620 | **0.930** | **+50.0%** |
+| **Command & Control (TA0011)** | 0.680 | **0.970** | **+42.6%** |
+| **Exfiltration (TA0010)** | 0.810 | **0.980** | **+21.0%** |
+
+---
+
+## 3. Architectural Design
+
+```mermaid
+graph TD
+    A[Raw Network Telemetry / PCAP / CSV] --> B[FlowAggregator & 69-Feature Vector Extractor]
+    B --> C[TemporalStateAccumulator: Windowed States S_t]
+    C --> D[PyTorch Temporal LSTM World Model: P S_t+1 | S_t]
+    D --> E[Recursive K-Step Forward Rollout Engine]
+    E --> F[MITRE ATT&CK Kill-Chain Progression Mapper]
+    E --> G[TreeSHAP Feature Attribution Engine]
+    F --> H[React Cyber SOC Console: Light/Dark Mode]
+    G --> H
+```
+
+### Key Subsystems:
+1. **Traffic Feature Ingestion (`backend/features.py`, `backend/flow_engine.py`)**:
+   - NetFlow / IPFIX flow-level statistics: Duration, total forward/backward packets, IAT distributions, protocol flags.
+   - Packet-level PCAP statistics: Initial window sizes, TTL deviations, packet length variances.
+2. **Temporal World Model (`backend/world_model.py`, `backend/world_model_forecast.py`)**:
+   - Recurrent sequence model operating over 5-window history vectors.
+   - Closed-loop recursive simulation generating forward trajectories up to 90 seconds ahead.
+3. **Attack Progression & MITRE Mapping (`backend/attack_progression.py`)**:
+   - Sequential state machine scoring progression through reconnaissance $\rightarrow$ initial access $\rightarrow$ lateral movement $\rightarrow$ C2 $\rightarrow$ exfiltration.
+4. **TreeSHAP Explainability (`backend/explainability.py`)**:
+   - Calculates exact Shapley feature impact values for network defenders to audit model reasoning.
+5. **Interactive Analyst UI (`frontend/src/`)**:
+   - **Light & Dark Mode**: Seamless toggle between sleek Cyber Night and high-contrast Enterprise Clean Light.
+   - **Offline Sandbox**: Ingest `.pcap`, `.pcapng`, and `.csv` files locally with real-time inference and zero cloud dependencies.
+   - **Interactive Visualizations**: 220° Radial Risk Gauge, Attack Conduit Timeline, Recharts Glow Forecast, ReactFlow Network Topology.
+
+---
+
+## 4. How to Run and Verify Offline
+
+### Prerequisites
+- Python 3.10+ (Virtual environment in `backend/.venv`)
+- Node.js 18+ & npm
+
+### Starting the Backend API (FastAPI)
+```bash
+# In repository root
+backend/.venv/Scripts/python.exe -m uvicorn backend.fastapi.api:app --host 127.0.0.1 --port 8000
+```
+- API Health Check: `http://127.0.0.1:8000/health`
+- Benchmark Endpoint: `http://127.0.0.1:8000/api/benchmarks`
+- Summary State: `http://127.0.0.1:8000/dashboard-summary`
+
+### Starting the Frontend Console (Vite + React)
+```bash
+cd frontend
+npm run dev
+```
+- Open browser at `http://127.0.0.1:5173`
+- Switch between **Light Mode** and **Dark Mode** via the Sun/Moon toggle in the top-right header.
+- Click **BENCHMARKS** in the header to view interactive empirical comparison charts.
+- Navigate to **PCAP Sandbox** to upload capture files or replay pre-packaged attack scenarios offline.

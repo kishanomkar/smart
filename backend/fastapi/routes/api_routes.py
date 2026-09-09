@@ -10,6 +10,8 @@ from ..schemas.responses import (
     ProgressionResponse, StatusResponse,
 )
 from ..services import dashboard_service, detector_service
+from ..services.offline_pipeline import analyze_offline_file
+from ...benchmark_comparison import get_benchmark_comparison
 
 router = APIRouter()
 
@@ -81,6 +83,13 @@ def dashboard_summary() -> DashboardSummary:
     return DashboardSummary(**dashboard_service.summary())
 
 
+@router.get("/benchmarks")
+@router.get("/api/benchmarks")
+def benchmarks():
+    """Return empirical benchmarks comparing Baseline (Logistic Regression) vs NETRA World Model"""
+    return get_benchmark_comparison()
+
+
 @router.post("/analyze-flow", response_model=FlowAnalysisResponse)
 def analyze_flow(request: FlowAnalysisRequest) -> FlowAnalysisResponse:
     try:
@@ -96,6 +105,10 @@ def analyze_flow(request: FlowAnalysisRequest) -> FlowAnalysisResponse:
         raise HTTPException(status_code=400, detail=str(error)) from error
 
 
-@router.post("/analyze-pcap", response_model=PcapAnalysisResponse, status_code=501)
-def analyze_pcap(file: UploadFile = File(...)) -> PcapAnalysisResponse:
-    return PcapAnalysisResponse(available=False, reason="Offline PCAP analysis is not implemented by the existing capture pipeline; use the live detector to create flow outputs locally.")
+@router.post("/analyze-pcap")
+@router.post("/analyze-file")
+async def analyze_pcap(file: UploadFile = File(...)):
+    """Analyze uploaded PCAP or CSV flow telemetry through offline World Model pipeline"""
+    content = await file.read()
+    result = analyze_offline_file(file.filename or "capture.pcap", content)
+    return result

@@ -106,12 +106,12 @@ export default function App() {
   const currentSummary = summary || defaultSummary
 
   return (
-    <div className="min-h-screen bg-[#07090e] text-slate-100 flex flex-col font-sans selection:bg-cyan-500/30 selection:text-cyan-200">
-      {/* Background Cyber Ambient Lights */}
-      <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
-        <div className="absolute top-[-10%] left-[-10%] w-[45vw] h-[45vw] bg-cyan-600/10 rounded-full blur-[140px]" />
-        <div className="absolute top-[20%] right-[-10%] w-[40vw] h-[40vw] bg-violet-600/10 rounded-full blur-[160px]" />
-        <div className="absolute bottom-[-10%] left-[25%] w-[50vw] h-[35vw] bg-rose-600/5 rounded-full blur-[180px]" />
+    <div className="min-h-screen bg-slate-100 dark:bg-[#07090e] text-slate-900 dark:text-slate-100 flex flex-col font-sans selection:bg-cyan-500/30 selection:text-cyan-200 transition-colors duration-300">
+      {/* Background Cyber Ambient Lights — dark mode only */}
+      <div className="fixed inset-0 pointer-events-none overflow-hidden z-0 dark:block hidden">
+        <div className="absolute top-[-10%] left-[-10%] w-[45vw] h-[45vw] bg-cyan-600/10 rounded-full blur-[140px] ambient-glow-cyan" />
+        <div className="absolute top-[20%] right-[-10%] w-[40vw] h-[40vw] bg-violet-600/10 rounded-full blur-[160px] ambient-glow-purple" />
+        <div className="absolute bottom-[-10%] left-[25%] w-[50vw] h-[35vw] bg-rose-600/5 rounded-full blur-[180px] ambient-glow-rose" />
       </div>
 
       {/* Top Application Header */}
@@ -122,7 +122,7 @@ export default function App() {
       />
 
       {/* Main Body */}
-      <main className="flex-1 max-w-7xl mx-auto w-full px-6 pb-12 z-10">
+      <main className="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 pb-12 z-10">
         {/* Module Subsystem Status Pills */}
         <StatusBar status={status} />
 
@@ -156,10 +156,10 @@ export default function App() {
       </main>
 
       {/* Footer */}
-      <footer className="w-full border-t border-white/[0.06] bg-slate-950/60 backdrop-blur py-4 px-6 z-10">
+      <footer className="w-full border-t border-slate-200/80 dark:border-white/[0.06] bg-white/80 dark:bg-slate-950/60 backdrop-blur py-4 px-6 z-10 transition-colors">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2 text-xs font-mono text-slate-500">
           <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-cyan-400" />
+            <span className="w-2 h-2 rounded-full bg-cyan-500" />
             <span>NETRA AI v1.0.0 // Autonomous Predictive Cyber-Defense & Forensics Engine</span>
           </div>
           <div className="flex items-center gap-4 text-[11px]">

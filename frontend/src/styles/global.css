@@ -1,8 +1,15 @@
-@import "tailwindcss";
+﻿@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+@custom-variant light (&:where(.light, .light *));
 
 :root {
   font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
   color-scheme: dark;
+}
+
+html.light, :root.light {
+  color-scheme: light;
 }
 
 body {
@@ -12,131 +19,153 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* Custom Cyber Glassmorphism & Card Glows */
+html.light body, body.light {
+  background-color: #f1f5f9 !important;
+  color: #0f172a !important;
+}
+
 .glass-panel {
-  background: rgba(13, 18, 28, 0.72);
+  background: rgba(13, 18, 28, 0.75);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .glass-panel:hover {
-  border-color: rgba(56, 189, 248, 0.25);
-  box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.5), 0 0 20px rgba(56, 189, 248, 0.08);
+  border-color: rgba(56, 189, 248, 0.35);
+  box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.5), 0 0 20px rgba(56, 189, 248, 0.1);
 }
 
-.glass-card-glow-cyan {
-  border-color: rgba(6, 182, 212, 0.3);
-  box-shadow: 0 0 25px rgba(6, 182, 212, 0.12);
+html.light .glass-panel {
+  background: rgba(255, 255, 255, 0.92) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  border-color: rgba(203, 213, 225, 0.8) !important;
+  box-shadow: 0 4px 24px -4px rgba(15, 23, 42, 0.07), 0 1px 4px -1px rgba(15, 23, 42, 0.04) !important;
+  color: #0f172a !important;
 }
 
-.glass-card-glow-rose {
-  border-color: rgba(244, 63, 94, 0.3);
-  box-shadow: 0 0 25px rgba(244, 63, 94, 0.12);
+html.light .glass-panel:hover {
+  border-color: rgba(6, 182, 212, 0.4) !important;
+  box-shadow: 0 10px 30px -5px rgba(15, 23, 42, 0.10), 0 0 15px rgba(6, 182, 212, 0.10) !important;
 }
 
-.glass-card-glow-emerald {
-  border-color: rgba(16, 185, 129, 0.3);
-  box-shadow: 0 0 25px rgba(16, 185, 129, 0.12);
+html.light [class*="bg-slate-900"],
+html.light [class*="bg-slate-950"],
+html.light [class*="bg-slate-800"] {
+  background-color: #f8fafc !important;
 }
 
-.glass-card-glow-purple {
-  border-color: rgba(168, 85, 247, 0.3);
-  box-shadow: 0 0 25px rgba(168, 85, 247, 0.12);
+html.light [class*="bg-slate-900\/"],
+html.light [class*="bg-slate-950\/"],
+html.light [class*="bg-slate-800\/"] {
+  background-color: rgba(248, 250, 252, 0.95) !important;
 }
 
-.glass-card-glow-amber {
-  border-color: rgba(245, 158, 11, 0.3);
-  box-shadow: 0 0 25px rgba(245, 158, 11, 0.12);
+html.light [class*="text-white"],
+html.light [class*="text-slate-100"],
+html.light [class*="text-slate-200"] {
+  color: #0f172a !important;
 }
 
-/* Background Cyber Mesh Grid */
-.cyber-grid-bg {
-  background-image: 
-    radial-gradient(circle at 50% 0%, rgba(56, 189, 248, 0.12), transparent 45%),
-    radial-gradient(circle at 90% 60%, rgba(168, 85, 247, 0.08), transparent 40%),
-    radial-gradient(circle at 10% 80%, rgba(16, 185, 129, 0.06), transparent 35%),
-    linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
-  background-size: 100% 100%, 100% 100%, 100% 100%, 36px 36px, 36px 36px;
+html.light [class*="text-slate-300"],
+html.light [class*="text-slate-400"] {
+  color: #475569 !important;
 }
 
-/* Animations */
-@keyframes radar-sweep {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+html.light [class*="text-slate-500"] {
+  color: #64748b !important;
 }
 
-@keyframes pulse-glow {
-  0%, 100% { opacity: 0.4; transform: scale(1); }
-  50% { opacity: 0.9; transform: scale(1.08); }
+html.light [class*="border-white\/"],
+html.light [class*="border-slate-800"],
+html.light [class*="border-slate-700"],
+html.light [class*="divide-slate-800"],
+html.light [class*="divide-slate-700"] {
+  border-color: #e2e8f0 !important;
 }
 
-@keyframes flow-particle {
-  0% { offset-distance: 0%; opacity: 0; }
-  10% { opacity: 1; }
-  90% { opacity: 1; }
-  100% { offset-distance: 100%; opacity: 0; }
+html.light h1,
+html.light h2,
+html.light h3,
+html.light h4,
+html.light h5,
+html.light h6 {
+  color: #0f172a !important;
 }
 
-.animate-radar {
-  animation: radar-sweep 4s linear infinite;
+html.light p {
+  color: #475569;
 }
 
-.animate-pulse-glow {
-  animation: pulse-glow 3s ease-in-out infinite;
+html.light input,
+html.light select,
+html.light textarea {
+  background-color: #ffffff !important;
+  border-color: #cbd5e1 !important;
+  color: #0f172a !important;
 }
 
-/* Custom Scrollbars */
-::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+html.light input::placeholder {
+  color: #94a3b8 !important;
 }
 
-::-webkit-scrollbar-track {
-  background: rgba(10, 14, 23, 0.8);
+html.light th {
+  background-color: #f1f5f9 !important;
+  color: #475569 !important;
 }
 
-::-webkit-scrollbar-thumb {
-  background: rgba(56, 189, 248, 0.25);
-  border-radius: 9999px;
+html.light td {
+  color: #0f172a !important;
+  border-color: #e2e8f0 !important;
 }
 
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(56, 189, 248, 0.5);
-}
+.glass-card-glow-cyan { border-color: rgba(6, 182, 212, 0.35); box-shadow: 0 0 25px rgba(6, 182, 212, 0.12); }
+.glass-card-glow-rose { border-color: rgba(244, 63, 94, 0.35); box-shadow: 0 0 25px rgba(244, 63, 94, 0.12); }
+.glass-card-glow-emerald { border-color: rgba(16, 185, 129, 0.35); box-shadow: 0 0 25px rgba(16, 185, 129, 0.12); }
+.glass-card-glow-purple { border-color: rgba(168, 85, 247, 0.35); box-shadow: 0 0 25px rgba(168, 85, 247, 0.12); }
+.glass-card-glow-amber { border-color: rgba(245, 158, 11, 0.35); box-shadow: 0 0 25px rgba(245, 158, 11, 0.12); }
 
-/* Text Gradients */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: rgba(10, 14, 23, 0.8); }
+html.light ::-webkit-scrollbar-track { background: rgba(241, 245, 249, 0.8); }
+::-webkit-scrollbar-thumb { background: rgba(56, 189, 248, 0.25); border-radius: 9999px; }
+html.light ::-webkit-scrollbar-thumb { background: rgba(148, 163, 184, 0.5); }
+::-webkit-scrollbar-thumb:hover { background: rgba(56, 189, 248, 0.5); }
+html.light ::-webkit-scrollbar-thumb:hover { background: rgba(100, 116, 139, 0.7); }
+
+@keyframes radar-sweep { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+@keyframes pulse-glow { 0%, 100% { opacity: 0.4; transform: scale(1); } 50% { opacity: 0.9; transform: scale(1.08); } }
+
+.animate-radar { animation: radar-sweep 4s linear infinite; }
+.animate-pulse-glow { animation: pulse-glow 3s ease-in-out infinite; }
+
 .text-gradient-cyan {
   background: linear-gradient(135deg, #38bdf8 0%, #818cf8 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
 }
-
+html.light .text-gradient-cyan {
+  background: linear-gradient(135deg, #0284c7 0%, #4f46e5 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
 .text-gradient-rose {
   background: linear-gradient(135deg, #fb7185 0%, #f43f5e 50%, #f97316 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
 }
-
+html.light .text-gradient-rose {
+  background: linear-gradient(135deg, #e11d48 0%, #ea580c 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
 .text-gradient-emerald {
   background: linear-gradient(135deg, #34d399 0%, #06b6d4 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
 }
-
-.text-gradient-purple {
-  background: linear-gradient(135deg, #c084fc 0%, #ec4899 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.text-gradient-amber {
-  background: linear-gradient(135deg, #fcd34d 0%, #f97316 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+html.light .text-gradient-emerald {
+  background: linear-gradient(135deg, #059669 0%, #0891b2 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
 }

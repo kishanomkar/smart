@@ -82,7 +82,7 @@ export function DashboardPage({ summary, status, error }: DashboardPageProps) {
             <Zap className="w-3.5 h-3.5" />
             Active Incident Intelligence & Predictive Radar
           </div>
-          <h1 className="text-2xl lg:text-3xl font-black text-white tracking-tight leading-tight">
+          <h1 className="text-2xl lg:text-3xl font-black text-slate-900 dark:text-white tracking-tight leading-tight">
             Autonomous Cyber Defense for the traffic you can see.
           </h1>
           <p className="text-xs lg:text-sm text-slate-400 mt-2 leading-relaxed">
@@ -91,18 +91,18 @@ export function DashboardPage({ summary, status, error }: DashboardPageProps) {
         </div>
 
         {/* Latest Flow Snapshot Card */}
-        <div className="p-4 rounded-xl bg-slate-900/80 border border-white/[0.08] min-w-[260px] flex flex-col justify-between">
-          <div className="flex items-center justify-between text-[10px] font-mono text-slate-400 mb-1">
+        <div className="p-4 rounded-xl bg-white/80 dark:bg-slate-900/80 border border-slate-200 dark:border-white/[0.08] min-w-[260px] flex flex-col justify-between">
+          <div className="flex items-center justify-between text-[10px] font-mono text-slate-500 dark:text-slate-400 mb-1">
             <span>LAST CAPTURED FLOW</span>
-            <span className="text-cyan-400 font-bold">{summary.latest_flow?.protocol || 'TCP:HTTPS'}</span>
+            <span className="text-cyan-600 dark:text-cyan-400 font-bold">{summary.latest_flow?.protocol || 'TCP:HTTPS'}</span>
           </div>
-          <div className="text-sm font-mono font-bold text-white mt-1">
+          <div className="text-sm font-mono font-bold text-slate-900 dark:text-white mt-1">
             {summary.latest_flow?.src_ip || '192.168.1.45'}:{summary.latest_flow?.src_port || '54820'} →{' '}
             {summary.latest_flow?.dst_ip || '10.0.0.12'}:{summary.latest_flow?.dst_port || '443'}
           </div>
-          <div className="flex items-center justify-between text-[11px] font-mono mt-2 pt-2 border-t border-white/[0.06]">
-            <span className="text-slate-400">Class:</span>
-            <span className="text-emerald-400 font-bold">{summary.current_prediction || 'BENIGN'}</span>
+          <div className="flex items-center justify-between text-[11px] font-mono mt-2 pt-2 border-t border-slate-200 dark:border-white/[0.06]">
+            <span className="text-slate-500 dark:text-slate-400">Class:</span>
+            <span className="text-emerald-600 dark:text-emerald-400 font-bold">{summary.current_prediction || 'BENIGN'}</span>
           </div>
         </div>
       </div>
@@ -192,7 +192,7 @@ export function DashboardPage({ summary, status, error }: DashboardPageProps) {
                 <BrainCircuit className="w-4 h-4" />
               </div>
               <div>
-                <h3 className="text-sm font-semibold tracking-wide text-white">Model Contributing Features</h3>
+                <h3 className="text-sm font-semibold tracking-wide text-slate-900 dark:text-white">Model Contributing Features</h3>
                 <p className="text-[11px] text-slate-400">TreeSHAP Local Attribution for Observed Flow</p>
               </div>
             </div>
