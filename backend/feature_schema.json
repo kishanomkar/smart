@@ -74,6 +74,7 @@
   ],
   "feature_count": 69,
   "source_csv_columns": [
+    "version https://git-lfs.github.com/spec/v1",
     "Destination Port",
     "Flow Duration",
     "Total Fwd Packets",
@@ -156,19 +157,11 @@
   ],
   "classes": [
     "BENIGN",
-    "Bot",
-    "DDoS",
     "DoS GoldenEye",
     "DoS Hulk",
     "DoS Slowhttptest",
     "DoS slowloris",
-    "FTP-Patator",
-    "Infiltration",
-    "PortScan",
-    "SSH-Patator",
-    "Web Attack \ufffd Brute Force",
-    "Web Attack \ufffd Sql Injection",
-    "Web Attack \ufffd XSS"
+    "Heartbleed"
   ],
   "notes": "Only features reproducible from live Scapy packet metadata are selected."
 }

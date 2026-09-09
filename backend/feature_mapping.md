@@ -4,6 +4,7 @@ Only rows marked `selected` are used by both training and live inference.
 
 | CIC feature | How it is calculated | Available? | Source type | Status |
 |---|---|---:|---|---|
+| `version https://git-lfs.github.com/spec/v1` | not selected: no defensible packet-metadata equivalent | no | unavailable | excluded from both pipelines |
 | `Destination Port` | destination port of the first packet defining the forward direction | yes | direct packet metadata | selected |
 | `Flow Duration` | last packet timestamp minus first packet timestamp, in microseconds | yes | aggregated from packets | selected |
 | `Total Fwd Packets` | count packets in the flow direction; subflow counts equal flow counts | yes | aggregated from packets | selected |

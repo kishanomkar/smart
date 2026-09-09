@@ -1,6 +1,7 @@
 __pycache__/
 *.py[cod]
 *$py.class
+.pytest_cache/
 
 # Datasets
 *.csv
@@ -8,3 +9,16 @@ newdata/
 
 # ML models
 *.joblib
+*.pt
+
+# Logs
+*.log
+
+# Frontend
+node_modules/
+dist/
+*.tsbuildinfo
+
+# Environment
+.env
+.env.*

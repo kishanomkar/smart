@@ -1,0 +1,34 @@
+{
+  "transitions": {
+    "Reconnaissance": ["Reconnaissance", "Initial Access", "Lateral Movement"],
+    "Initial Access": ["Initial Access", "Lateral Movement", "Command and Control"],
+    "Lateral Movement": ["Lateral Movement", "Command and Control", "Exfiltration"],
+    "Command and Control": ["Command and Control", "Exfiltration"],
+    "Exfiltration": ["Exfiltration"]
+  },
+  "Reconnaissance": {
+    "description": "Behavioural evidence of discovery or probing activity.",
+    "mitre_tactics": ["Reconnaissance"],
+    "supporting_behaviours": ["destination diversity", "new destinations", "destination-port diversity"]
+  },
+  "Initial Access": {
+    "description": "Behavioural evidence of an elevated suspicious connection or threat signal.",
+    "mitre_tactics": ["Initial Access"],
+    "supporting_behaviours": ["threat-probability evidence", "malicious-flow ratio"]
+  },
+  "Lateral Movement": {
+    "description": "Behavioural evidence of communication expanding across endpoints.",
+    "mitre_tactics": ["Lateral Movement"],
+    "supporting_behaviours": ["new source endpoints", "new destination endpoints", "destination-host growth"]
+  },
+  "Command and Control": {
+    "description": "Behavioural evidence from available inter-arrival timing signals.",
+    "mitre_tactics": ["Command and Control"],
+    "supporting_behaviours": ["repeated timing signal"]
+  },
+  "Exfiltration": {
+    "description": "Behavioural evidence of high-volume traffic combined with malicious-flow evidence.",
+    "mitre_tactics": ["Exfiltration"],
+    "supporting_behaviours": ["bytes_total", "malicious-flow ratio"]
+  }
+}
