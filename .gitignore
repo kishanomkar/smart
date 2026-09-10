@@ -22,3 +22,6 @@ dist/
 # Environment
 .env
 .env.*
+.venv/
+venv/
+ENV/
