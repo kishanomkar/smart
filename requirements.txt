@@ -5,3 +5,7 @@ pandas
 scapy
 scikit-learn
 torch
+fastapi
+python-multipart
+uvicorn
+shap
