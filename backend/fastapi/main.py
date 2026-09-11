@@ -16,9 +16,37 @@ from backend.fastapi.routes.api_routes import router as api_router
 MODEL_PATH = Path(__file__).resolve().parent.parent / "models" / "world_model.pt"
 
 
+import threading
+import time
+
+def start_background_simulator():
+    """Automatically simulates live network traffic packets in the background on deployment."""
+    def _simulator_loop():
+        time.sleep(2)
+        window = 1
+        while True:
+            try:
+                for i in range(15):
+                    dport = 80 if i < 8 else 445
+                    flags = "S" if i % 2 == 0 else "SA"
+                    src = f"192.168.1.{10 + (window % 10)}"
+                    detector.inject_packet(src, "127.0.0.1", dport, flags)
+                    time.sleep(0.01)
+                
+                time.sleep(2.1)
+                detector.inject_packet("1.1.1.1", "127.0.0.1", 80, "S")
+                window += 1
+            except Exception as e:
+                print(f"Auto traffic simulator note: {e}")
+                time.sleep(3)
+
+    thread = threading.Thread(target=_simulator_loop, daemon=True)
+    thread.start()
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     detector.start()
+    start_background_simulator()
     yield
     detector.stop()
 
