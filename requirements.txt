@@ -1,10 +1,11 @@
+--extra-index-url https://download.pytorch.org/whl/cpu
+torch
 joblib
 networkx
 numpy
 pandas
 scapy
 scikit-learn
-torch
 fastapi
 python-multipart
 uvicorn
