@@ -10,6 +10,7 @@ newdata/
 # ML models
 *.joblib
 *.pt
+!backend/models/world_model.pt
 
 # Logs
 *.log

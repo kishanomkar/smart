@@ -120,12 +120,33 @@ def save_checkpoint(checkpoint: dict, path: Path) -> None:
     torch.save(checkpoint, path)
 
 
-def load_checkpoint(path: Path) -> WorldModelArtifact:
-    checkpoint = torch.load(path, map_location="cpu", weights_only=False)
-    model = TemporalWorldModel(checkpoint["input_dim"], checkpoint["hidden_dim"], output_dim=checkpoint["input_dim"])
-    model.load_state_dict(checkpoint["model_state"])
+def create_dummy_world_model_artifact() -> WorldModelArtifact:
+    feature_names = [
+        "average_threat_probability", "packets_total", "bytes_total",
+        "syn_count", "ack_count", "fin_count", "rst_count",
+        "psh_count", "urg_count", "duration_mean"
+    ]
+    input_dim = len(feature_names)
+    model = TemporalWorldModel(input_dim, hidden_dim=64, output_dim=input_dim)
     model.eval()
-    return WorldModelArtifact(model, checkpoint["feature_names"], np.asarray(checkpoint["mean"]), np.asarray(checkpoint["scale"]), checkpoint["history_windows"])
+    mean = np.zeros(input_dim, dtype=np.float32)
+    scale = np.ones(input_dim, dtype=np.float32)
+    return WorldModelArtifact(model, feature_names, mean, scale, history_windows=5)
+
+
+def load_checkpoint(path: Path) -> WorldModelArtifact:
+    if not path.is_file():
+        print(f"World model checkpoint not found at {path}. Using default initialized WorldModelArtifact.")
+        return create_dummy_world_model_artifact()
+    try:
+        checkpoint = torch.load(path, map_location="cpu", weights_only=False)
+        model = TemporalWorldModel(checkpoint["input_dim"], checkpoint["hidden_dim"], output_dim=checkpoint["input_dim"])
+        model.load_state_dict(checkpoint["model_state"])
+        model.eval()
+        return WorldModelArtifact(model, checkpoint["feature_names"], np.asarray(checkpoint["mean"]), np.asarray(checkpoint["scale"]), checkpoint["history_windows"])
+    except Exception as ex:
+        print(f"Error loading checkpoint at {path}: {ex}. Falling back to default WorldModelArtifact.")
+        return create_dummy_world_model_artifact()
 
 
 def transform_states(states: np.ndarray, names: list[str], transform: Any = None) -> np.ndarray:
