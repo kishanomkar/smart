@@ -1,0 +1,74 @@
+Using detected interface: \Device\NPF_{EE509EDB-4E7E-4E10-8993-96F1AD3519B0}
+Starting live capture on \Device\NPF_{EE509EDB-4E7E-4E10-8993-96F1AD3519B0}...
+C:\Users\Hp\Desktop\machine apis\smart\backend\fastapi\main.py:37: DeprecationWarning: 
+        on_event is deprecated, use lifespan event handlers instead.
+
+        Read more about it in the
+        [FastAPI docs for Lifespan Events](https://fastapi.tiangolo.com/advanced/events/).
+        
+  @app.on_event("startup")
+C:\Users\Hp\Desktop\machine apis\smart\backend\fastapi\main.py:41: DeprecationWarning: 
+        on_event is deprecated, use lifespan event handlers instead.
+
+        Read more about it in the
+        [FastAPI docs for Lifespan Events](https://fastapi.tiangolo.com/advanced/events/).
+        
+  @app.on_event("shutdown")
+INFO:     Started server process [20372]
+INFO:     Waiting for application startup.
+Using detected interface: \Device\NPF_{EE509EDB-4E7E-4E10-8993-96F1AD3519B0}
+Starting live capture on \Device\NPF_{EE509EDB-4E7E-4E10-8993-96F1AD3519B0}...
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+INFO:     127.0.0.1:58790 - "GET /dashboard-summary HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58790 - "GET /dashboard-summary HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58794 - "GET /status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58790 - "GET /dashboard-summary HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58790 - "GET /dashboard-summary HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58790 - "GET /dashboard-summary HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58790 - "GET /dashboard-summary HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58790 - "GET /dashboard-summary HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49843 - "GET /dashboard-summary HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52797 - "GET /dashboard-summary HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52797 - "GET /dashboard-summary HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52478 - "GET /status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52478 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:60428 - "GET /dashboard-summary HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60428 - "GET /dashboard-summary HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49162 - "GET /dashboard-summary HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49162 - "GET /dashboard-summary HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49162 - "GET /dashboard-summary HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65033 - "GET /dashboard-summary HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65033 - "GET /dashboard-summary HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49696 - "GET /dashboard-summary HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49696 - "GET /dashboard-summary HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49696 - "GET /socket.io/?EIO=4&transport=polling&t=xx9snmhz HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:54856 - "GET /api/forecasts/live HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56898 - "GET /socket.io/?EIO=4&transport=polling&t=xx9sqcbe HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:49696 - "GET /api/forecasts/live HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49696 - "GET /socket.io/?EIO=4&transport=polling&t=xxaos4rn HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:49696 - "GET /socket.io/?EIO=4&transport=polling&t=xxc7wqy6 HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:49696 - "GET /dashboard-summary HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49696 - "GET /dashboard-summary HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50799 - "GET /dashboard-summary HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50799 - "GET /dashboard-summary HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49696 - "GET /dashboard-summary HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49696 - "GET /dashboard-summary HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50799 - "GET /dashboard-summary HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50799 - "GET /dashboard-summary HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49696 - "GET /dashboard-summary HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49696 - "GET /dashboard-summary HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58165 - "GET /dashboard-summary HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58165 - "GET /dashboard-summary HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58165 - "GET /dashboard-summary HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58165 - "GET /dashboard-summary HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58165 - "GET /dashboard-summary HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58165 - "GET /dashboard-summary HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61062 - "GET /dashboard-summary HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61062 - "GET /dashboard-summary HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61062 - "GET /dashboard-summary HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61062 - "GET /dashboard-summary HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61062 - "GET /dashboard-summary HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61062 - "GET /dashboard-summary HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51339 - "GET /dashboard-summary HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51339 - "GET /dashboard-summary HTTP/1.1" 200 OK
