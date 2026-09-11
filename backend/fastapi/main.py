@@ -22,18 +22,18 @@ import time
 def start_background_simulator():
     """Automatically simulates live network traffic packets in the background on deployment."""
     def _simulator_loop():
-        time.sleep(2)
+        time.sleep(3)
         window = 1
         while True:
             try:
-                for i in range(15):
-                    dport = 80 if i < 8 else 445
+                for i in range(10):
+                    dport = 80 if i < 5 else 445
                     flags = "S" if i % 2 == 0 else "SA"
                     src = f"192.168.1.{10 + (window % 10)}"
                     detector.inject_packet(src, "127.0.0.1", dport, flags)
-                    time.sleep(0.01)
+                    time.sleep(0.05)
                 
-                time.sleep(2.1)
+                time.sleep(2.5)
                 detector.inject_packet("1.1.1.1", "127.0.0.1", 80, "S")
                 window += 1
             except Exception as e:

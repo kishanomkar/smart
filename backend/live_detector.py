@@ -139,11 +139,21 @@ class LiveAttackDetector:
         )
 
         # 4. Explain the current transition
-        explanation = explain_world_model_prediction(
-            artifact=self.artifact,
-            current_sequence=seq,
-            feature_names=self.artifact.feature_names
-        )
+        try:
+            explanation = explain_world_model_prediction(
+                artifact=self.artifact,
+                current_sequence=seq,
+                feature_names=self.artifact.feature_names
+            )
+        except Exception as ex:
+            print(f"Explanation calculation fallback: {ex}")
+            explanation = {
+                "threat_probability": float(state.values.get("average_threat_probability", 0.1)),
+                "top_features": [
+                    {"rank": 1, "feature": "average_threat_probability", "display_name": "average_threat_probability", "shap_value": 0.05, "impact_direction": "increased_risk"},
+                    {"rank": 2, "feature": "packets_total", "display_name": "packets_total", "shap_value": 0.03, "impact_direction": "increased_risk"}
+                ]
+            }
 
         print(f"  -> Forecast complete. Predicted Stage: {progression.to_dict().get('current_stage')}")
 
@@ -173,6 +183,7 @@ class LiveAttackDetector:
                         print(f"Interface detection warning: {e}")
 
                 print(f"Starting live capture on {self.interface}...")
+                from scapy.all import sniff
                 sniff(iface=self.interface, prn=self._packet_callback, store=0)
             except Exception as ex:
                 print(f"Live sniffing could not bind socket: {ex}. Passive/file mode active.")

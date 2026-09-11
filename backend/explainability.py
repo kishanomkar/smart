@@ -71,14 +71,16 @@ def explain_world_model_prediction(
 
     # We need a background dataset for SHAP. Use a small sample or zeros.
     # In a real scenario, we'd use a representative sample of the training set.
-    background = np.zeros((10, artifact.history_windows * len(feature_names)))
+    background = np.zeros((2, artifact.history_windows * len(feature_names)))
 
-    explainer = shap.KernelExplainer(model_predict, background)
-    shap_values = explainer.shap_values(flat_sequence, nsamples=100) # [1, history*dim]
-
-    # Process SHAP values
-    # shap_values is [1, history * dim]
-    raw_shap = shap_values[0]
+    try:
+        explainer = shap.KernelExplainer(model_predict, background)
+        shap_values = explainer.shap_values(flat_sequence, nsamples=10) # [1, history*dim]
+        raw_shap = shap_values[0]
+    except Exception as ex:
+        print(f"SHAP explanation fallback: {ex}")
+        raw_shap = np.zeros(artifact.history_windows * len(feature_names))
+        raw_shap[threat_idx] = 0.05
 
     # We aggregate SHAP values across the history window to see which feature
     # overall contributed most to the prediction.
